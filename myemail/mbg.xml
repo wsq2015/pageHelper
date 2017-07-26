@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+  <context id="mysqlTables" targetRuntime="MyBatis3">
+  
+	  <commentGenerator>
+	  <property name="suppressAllComments" value="true" />
+	</commentGenerator>
+  	<!-- 数据库连接信息 -->
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+        connectionURL="jdbc:mysql://localhost:3306/ssm_email"
+        userId="root"
+        password="root">
+    </jdbcConnection>
+
+    <javaTypeResolver >
+      <property name="forceBigDecimals" value="false" />
+    </javaTypeResolver>
+
+    <!-- 生成java实体类 -->
+    <javaModelGenerator targetPackage="com.bw.bean" targetProject=".\src\main\java">
+      <property name="enableSubPackages" value="true" />
+      <property name="trimStrings" value="true" />
+    </javaModelGenerator>
+
+    <!-- 生产mapper.xml -->
+    <sqlMapGenerator targetPackage="com.bw.dao"  targetProject=".\src\main\java">
+      <property name="enableSubPackages" value="true" />
+    </sqlMapGenerator>
+
+    <!-- 生产 mapper.java-->
+    <javaClientGenerator type="XMLMAPPER" targetPackage="com.bw.dao"  targetProject=".\src\main\java">
+      <property name="enableSubPackages" value="true" />
+    </javaClientGenerator>
+
+    <table schema="DB2ADMIN" tableName="t_email" domainObjectName="Email" ></table>
+
+  </context>
+</generatorConfiguration>
