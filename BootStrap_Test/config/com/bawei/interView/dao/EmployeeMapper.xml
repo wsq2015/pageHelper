@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.bawei.interView.dao.EmployeeMapper">
+  
+	  <insert id="zhuce" parameterType="com.bawei.interView.bean.Employee">
+	      insert into employee(ename,gender,email,ebirthday,did) values(
+	      #{ename},#{gender},#{email},#{ebirthday},#{Department.did});
+	  </insert>
+	  <delete id="deleteEmp">
+	      delete from employee where eid in (#eid);
+	  </delete>
+	  <select id="login" resultType="com.bawei.interView.bean.Employee">
+	      select * from employee where ename=#{ename} and email=#{email}
+	  </select>
+	  
+	  <resultMap type="com.bawei.interView.bean.Employee" id="emplist">
+	  <id column="eid" property="eid"/>
+	  <result column="ename" property="ename"/>
+	  <result column="ebirthday" property="ebirthday"/>
+	  <result column="email" property="email"/>
+	  <result column="gender" property="gender"/>
+	  
+	  <association javaType="com.bawei.interView.bean.Department" property="Department">
+	  <id column="did" property="did"/>
+	  <result column="dname" property="dname"/>
+	  </association>
+	  </resultMap>
+	  
+	  <select id="queryEmp" resultMap="emplist">
+	     select * from employee e,department d where e.did=d.did
+	  </select>
+  
+  </mapper>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:aop="http://www.springframework.org/schema/aop" 
+	   xmlns:tx="http://www.springframework.org/schema/tx" 
+	   xmlns:context="http://www.springframework.org/schema/context" 
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	                       http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	                       http://www.springframework.org/schema/util 
+	                       http://www.springframework.org/schema/util/spring-util.xsd
+	                       http://www.springframework.org/schema/aop
+	                       http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+	                       http://www.springframework.org/schema/tx
+	                       http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+	                       http://www.springframework.org/schema/context
+	                       http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+	
+	
+	<!-- 扫描除了controller之外的包 -->
+	<context:component-scan base-package="com.bw">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	
+	<!-- 配置连接池 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+		<property name="url" value="jdbc:mysql:///bootstrap_test?characterEncoding=utf-8"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="root"></property>
+	</bean>
+	
+	<!-- 配置sqlSession -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:com/bw/dao/*Mapper.xml</value>
+			</list>
+		</property>
+		<property name="typeAliasesPackage" value="com.bw.bean"></property>
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+	</bean>
+	
+	<!-- 配置mapperScannerConfig -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.bw.dao"></property>
+		<property name="sqlSessionFactory" ref="sqlSession"></property>
+	</bean>
+	
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- 配置注解驱动 -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<bean
+        class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <util:list id="beanList">
+                <ref bean="mappingJacksonHttpMessageConverter" />
+            </util:list>
+        </property>
+    </bean>
+    <bean id="mappingJacksonHttpMessageConverter"
+        class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/html;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+	
+</beans>

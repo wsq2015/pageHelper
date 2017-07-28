@@ -45,7 +45,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					   angular.element("#span").text("用户名可以使用").prop("style","color:red");
 					   $scope.all = false;
 					}else{
-					 angular.element("#span").text("用户名重复").prop("style","color:red");
+					   angular.element("#span").text("用户名重复").prop("style","color:red");
 					   $scope.all = true;
 					}
 				}, function errorCallback(response) {

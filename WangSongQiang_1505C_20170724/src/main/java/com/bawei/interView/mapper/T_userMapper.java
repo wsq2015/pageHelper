@@ -1,6 +1,5 @@
 package com.bawei.interView.mapper;
 
-import com.bawei.interView.bean.T_address;
 import com.bawei.interView.bean.T_user;
 import com.bawei.interView.bean.T_userExample;
 
